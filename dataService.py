@@ -2,6 +2,7 @@ import os
 import codecs
 import json
 import base64
+import pickle
 from pprint import pprint
 
 # KUO DAUGIAU TAŠKŲ TUO ILGIAU NEPARDUOS
@@ -27,7 +28,7 @@ def predictSale(car):
         pass
 
 
-    car['Parduota per (pagal taisykles)'] = soldInDays
+    car['Parduota per dienas (pagal taisykles)'] = soldInDays
 
     return car
 
@@ -199,9 +200,6 @@ def getData():
             #exportImage('C:\\Users\\Ignas\\Documents\\Kursinis\\CategorisedImages\\5th\\' + str(count5) + '.jpg', car['image'])
             count5 += 1
 
-
-
-
     # Processing.
     dicFuel = {}
     dicBody = {}
@@ -231,6 +229,17 @@ def getData():
             car['Defektai'] = 0
         else:
             car['Defektai'] = 1
+ 
+    # Dumping data for later.
+    with open('car.dictionary', 'wb') as config_dictionary_file:
+        pickle.dump(data, config_dictionary_file)
 
+    return data
 
+def getSavedData():
+    # Step 2
+    with open('car.dictionary', 'rb') as config_dictionary_file:
+    
+        # Step 3
+        data = pickle.load(config_dictionary_file)
     return data

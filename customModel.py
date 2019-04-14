@@ -122,9 +122,6 @@ def generate_datasets():
             print(identifier)
             pass
 
-        
-
-    
 
     validation_images = images[:validation_size]
     validation_labels = labels[:validation_size]
