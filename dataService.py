@@ -3,6 +3,7 @@ import codecs
 import json
 import base64
 import pickle
+import pandas
 from pprint import pprint
 
 # KUO DAUGIAU TAŠKŲ TUO ILGIAU NEPARDUOS
@@ -36,113 +37,113 @@ def pointsForDate(date):
 
     date = date.replace('-', '')
     if int(date) > 201500:
-        return -5
+        return -50
     if int(date) > 201000:
         return 0
     if int(date) > 200500:
-        return 5
+        return 50
     if int(date) > 200000:
-        return 10
+        return 100
     return 15
 
 def pointsForPrice(price):
     price = price.split('€', 1)[0].replace(' ', '')
     if int(price) > 15000:
-        return 15
+        return 150
     if int(price) > 10000:
-        return 10
+        return 100
     if int(price) > 8000:
-        return 8
+        return 80
     if int(price) > 6000:
-        return -3
+        return -30
     if int(price) > 2000:
-        return -5
+        return -50
     if int(price) > 1000:
-        return -8
-    return -10
+        return -80
+    return -100
 
 def pointsForMileage(mileage):
     if mileage == 'NA':
-        return 5
+        return 50
 
     mileage = mileage.replace('km', '').replace(' ', '')
     if int(mileage) > 400000:
-        return 10
+        return 100
     if int(mileage) > 300000:
-        return 6
+        return 60
     if int(mileage) > 200000:
-        return 4
+        return 40
     if int(mileage) > 100000:
-        return -4
-    return -6
+        return -40
+    return -60
 
 def pointsForFuelType(fuel):
     if fuel == 'Dyzelinas':
-        return -2
+        return -20
     if fuel == 'Benzinas':
-        return 1
-    return -3
+        return 10
+    return -30
 
 def pointsForBodyType(bodyType):
     if bodyType == 'Hečbekas':
-        return -2
+        return -20
     if bodyType == 'Sedanas':
-        return -3
+        return -30
     if bodyType == 'Visureigis':
-        return -1
-    return 4
+        return -10
+    return 40
 
 def pointsForWheelPosition(wheelPosition):
     if wheelPosition == 'Kairėje':
         return 0
-    return 5
+    return 50
     
 def pointsForDefects(defects):
     if defects == 'Be defektų':
         return 0
-    return 4
+    return 40
 
 def pointsForLocation(location):
     if location == 'Vilnius':
-        return -3
+        return -30
     if location == 'Kaunas':
-        return -2
+        return -20
     if location == 'Klaipėda':
-        return -1
+        return -10
     if location == 'Marijampolė':
         return 0
-    return 3
+    return 30
 
 def pointsForImage(defected, date, color, bodyType):
     points = 0
     if defected == 'Be defektų':
         points += 0
     else:
-        points += 5
+        points += 50
     date = date.replace('-', '')
 
     if int(date) > 201500:
-        points += 0
+        points += 00
     elif int(date) > 201300:
-        points += 3
+        points += 30
     elif int(date) > 201100:
-        points += 4
+        points += 40
     elif int(date) > 200800:
-        points += 5
+        points += 50
     else:
-        points += 6
+        points += 60
 
     if color == 'Mėlyna / žydra':
-        points += 5
+        points += 50
     elif color == 'Raudona / vyšninė':
-        points += 6
+        points += 60
 
     if bodyType == 'Hečbekas':
-        points += 4 
+        points += 40
     if bodyType == 'Sedanas':
-        points += 2
+        points += 20
     if bodyType == 'Visureigis':
-        points += 1
+        points += 10
 
     return points
 
@@ -218,7 +219,7 @@ def getData():
         car['Kėbulo tipas'] = dicBody[car['Kėbulo tipas']]
         car['Miestas'] = dicLocation[car['Miestas']]
         car['Vairo padėtis'] = dicWheel[car['Vairo padėtis']]
-        car['Pagaminimo data'] = car['Pagaminimo data'].replace('-', '')
+        car['Pagaminimo data'] = int(car['Pagaminimo data'].replace('-', ''))
         car['Kaina Lietuvoje'] = car['Kaina Lietuvoje'].split('€', 1)[0].replace(' ', '')
         car['Rida'] = car['Rida'].replace('km', '').replace(' ', '')
         if car['Rida'] == 'NA':
@@ -237,9 +238,6 @@ def getData():
     return data
 
 def getSavedData():
-    # Step 2
     with open('car.dictionary', 'rb') as config_dictionary_file:
-    
-        # Step 3
         data = pickle.load(config_dictionary_file)
     return data
